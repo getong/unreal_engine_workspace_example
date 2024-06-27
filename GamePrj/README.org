@@ -33,3 +33,24 @@ UE_LOG函数是日志打印函数，以后会经常用到，后续会详细说�
 
 AGamePrjCharacter::BeginPlay()函数在游戏启动时由UE框架调用，意为一个游戏player开始游戏。
 #+end_quote
+
+** component code
+
+
+#+begin_quote
+上述代码重载了ACharacter::OnJumped_Implementation()函数，该函数在角色跳跃的时候被调用。
+
+代码实现的功能：角色跳跃后，将角色的Z轴坐标增加100个单位，于是角色就跳跃到更高的位置。
+
+角色的位置（三维世界的坐标）是被USceneComponent类型的component控制。USceneComponent是一种非常重要且常用的component类型。
+
+代码中首先通过AActor::GetComponentByClass()方法，获取component对象指针。然后使用Cast语句将该指针转化为其子类USceneComponent的指针。Cast语句类似于c++语法中的dynamic_cast。
+
+代码中还出现USceneComponent::StaticClass()这个奇怪的语句。它是获取USceneComponent的UClass对象的意思。本章暂不解释，下一章即对UClass的使用作详细说明。
+
+然后如果转换成功，则用USceneComponent::GetComponentLocation()取出角色的坐标。最后将坐标的Z轴添加100单位，再重设回去。
+
+这里可以看到，AActor的坐标属性控制在USceneComponent类型的component中。这就是UE系统运作的基本逻辑之一，它通过各种各样添加到AActor上的component，来实现对AActor的表现或者行为的控制。在“细节”窗口（通过点击菜单“窗口->细节”来打开），点击“+添加”按钮，可以为当前选择的actor添加各种component。
+
+最后运行一下，当开始游戏后，点击空格键，角色跳跃到了一个更高的空中平台。不过效果挺怪的，角色踩在空中掉不下来，而且视角也没有跟随角色移动，只要角色多跳几次，那就移动到屏幕外面。这是因为没有更新其它相关对象(如摄像机组件等)的原因。但本示例不再对比细化说明。
+#+end_quote

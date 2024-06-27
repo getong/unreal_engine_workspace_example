@@ -170,3 +170,16 @@ void AGamePrjCharacter::Look(const FInputActionValue& Value)
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
+
+void AGamePrjCharacter::OnJumped_Implementation()
+{
+	UActorComponent* pComponent = GetComponentByClass(USceneComponent::StaticClass());
+	USceneComponent* pSceneComponent = Cast<USceneComponent>(pComponent);
+	if (pSceneComponent)
+    {
+      FVector location = pSceneComponent->GetComponentLocation();
+
+      location.Z += 100;
+      pSceneComponent->SetWorldLocation(location);
+    }
+}
